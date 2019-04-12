@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+if [ "Dockerfile" -nt .Dockerfile ]; then
+    docker-compose build
+    touch .Dockerfile
+fi
+
+# docker-compose start
+docker-compose run dev $@

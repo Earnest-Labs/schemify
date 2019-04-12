@@ -1,0 +1,32 @@
+version: '3.6'
+
+volumes:
+  pg-data:
+
+services:
+  dev:
+    build: .
+    command: echo "Intentionally left blank."
+    working_dir: /usr/src/app
+    volumes:
+      - ./:/usr/src/app
+    links:
+      - pgsql-dev      
+    environment:
+      - POSTGRES_USER=schemify
+      - POSTGRES_PASSWORD=schemify
+      - POSTGRES_DB=schemify
+      - POSTGRES_HOST=pgsql-dev
+    entrypoint: ./docker-entrypoint.sh
+    
+  pgsql-dev:
+    image: postgres:9.4.6
+    ports:
+      - 5433
+      - 5432
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=schemify
+      - POSTGRES_PASSWORD=schemify
+    command: "postgres"

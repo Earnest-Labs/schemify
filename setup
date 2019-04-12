@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+. require_venv
+${PYTHON} setup.py -q install && touch ${VENV_DIR}/installed
+${PYTHON} setup.py $@

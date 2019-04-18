@@ -1,0 +1,11 @@
+type: table
+name: users
+columns:
+  - name: id
+    type: integer
+  - name: username
+    type: char
+    length: 255
+  - name: passwordhash
+    type: char
+    length: 64

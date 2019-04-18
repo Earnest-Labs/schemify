@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+PATH=${HOME}/.pyenv/bin:${PATH}
+PYENV=$(which pyenv)
+if [[ "${PYENV}" == "" ]]; then
+    echo "WARNING: Pyenv is required."
+    echo "PATH:${PATH}"
+    echo "On Mac: Try installing it with this command: brew install pyenv"
+    echo "Elsewhere: see https://github.com/pyenv/pyenv-installer"
+    exit 127
+fi
+
+PYTHON=$(pyenv which python 2> /dev/null)
+if [[ "${PYTHON}" == "" ]]; then
+    echo "Python version '$(cat .python-version)' is not installed. Run this command: pyenv install $(cat .python-version)"
+    exit 127
+fi
+
+PYVENV="${PYTHON} -m venv"
+if [ -f /.dockerenv ]; then
+#    echo "Running in docker"
+    VENV_DIR=./.venv-docker/
+else
+#    echo "Running in base reality"
+    VENV_DIR=./.venv/
+fi
+
+if [ ! -d ${VENV_DIR} ]; then
+    ${PYVENV} ${VENV_DIR}
+fi
+
+source ${VENV_DIR}/bin/activate
+PYTHON=$(which python) # refresh w/ venv's python

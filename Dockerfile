@@ -1,19 +1,11 @@
-FROM phusion/baseimage:0.11
+FROM python:3.7.4-alpine3.10
 
-# Install prerequisites for building python versions
-RUN apt-get update && apt-get install -y git postgresql-client gcc \
-    make zlib1g-dev build-essential libncursesw5-dev libgdbm-dev \
-    libc6-dev libsqlite3-dev tk-dev libssl-dev openssl libffi-dev 
+ARG PACKAGES="postgresql-libs"
+ARG BUILD_PACKAGES="gcc musl-dev postgresql-dev"
 
-# Install pyenv
-RUN curl https://pyenv.run | bash \
-    && echo 'export PATH="$HOME/.pyenv/bin:$PATH"' >> ~/.pyenv/bin/init \
-    && echo 'eval "$(pyenv init -)"' >> ~/.pyenv/bin/init \
-    && echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.pyenv/bin/init \
-    && echo '. ~/.pyenv/bin/init' >> ~/.bashrc
+COPY . /usr/src/app
+WORKDIR /usr/src/app
 
-# Install Python 3.7.2
-RUN . ~/.pyenv/bin/init \
-    && pyenv install -v 3.7.2
-
-RUN apt-get install -y libyaml-dev
+RUN apk update && apk add $PACKAGES && apk add --virtual .build-deps $BUILD_PACKAGES \
+    && python setup.py install \
+    && apk --purge del .build-deps

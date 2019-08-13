@@ -51,7 +51,7 @@ schemify -H {db-host} -p {db-port} -U {db-user} -P {db-password} -d {db-database
 
 # Productizing Notes:
 
-1. CI needs to build and deploy this to pypi.
+1. CI needs to build and deploy this to dockerhub/artifactory.
 2. Need to support functions, custom types, triggers, and renaming
    of :allthethings:.
 3. A decision should be made whether the declarations should continue

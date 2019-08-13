@@ -5,6 +5,7 @@ volumes:
 
 services:
   dev:
+    image: schemify
     build: .
     command: echo "Intentionally left blank."
     working_dir: /usr/src/app
@@ -17,7 +18,7 @@ services:
       - POSTGRES_PASSWORD=schemify
       - POSTGRES_DB=schemify
       - POSTGRES_HOST=pgsql-dev
-    entrypoint: ./docker-entrypoint.sh
+    # entrypoint: ./docker-entrypoint.sh
     
   pgsql-dev:
     image: postgres:9.4.6

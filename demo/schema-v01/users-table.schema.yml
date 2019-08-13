@@ -2,7 +2,7 @@ type: table
 name: users
 columns:
   - name: id
-    type: integer
+    type: bigserial
   - name: username
     type: char
     length: 255

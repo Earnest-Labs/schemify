@@ -1,3 +1,4 @@
+import logging
 import psycopg2
 import os
 
@@ -34,14 +35,33 @@ def listTableColumns(connection, table, schema='public'):
             }
     return result
 
+def listConstraintColumns(connection, table, constraintName, schema='public'):
+    cursor = execute(connection,f"SELECT column_name, ordinal_position FROM information_schema.key_column_usage WHERE table_schema='{schema}' AND table_name='{table}' AND constraint_name='{constraintName}'")
+    result = dict();
+    for column in cursor.fetchall():
+        result[column[0]] = column[1]
+    return result;
+
+def listTableConstraints(connection, table, schema='public'):
+    cursor = execute(connection, f"SELECT constraint_name, constraint_type FROM information_schema.table_constraints WHERE table_schema='{schema}' AND table_name='{table}'")
+    result = dict();
+    for column in cursor.fetchall():
+        result[column[0]] = {
+            'constraint_type' : column[1],
+            'columns': listConstraintColumns(connection, table, column[0], schema)
+            }
+    return result
+
 def listTables(connection, schema='public'):
     cursor = execute(connection, f"SELECT table_name FROM information_schema.tables WHERE table_schema='{schema}' AND table_type='BASE TABLE'")
     result = dict();
     for item in cursor.fetchall():
+        logging.debug(f"listTables: {item[0]}")
         result[item[0]] = {
             'type': 'table',
             'name': item[0],
-            'columns' : listTableColumns(connection, item[0])
+            'columns' : listTableColumns(connection, item[0]),
+            'constraints' : listTableConstraints(connection, item[0])
             }
     return result
 

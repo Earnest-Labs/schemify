@@ -2,10 +2,16 @@ type: table
 name: users
 columns:
   - name: id
-    type: integer
+    type: bigserial
   - name: username
     type: char
     length: 255
+    constraints:
+      - type: unique
   - name: passwordhash
     type: char
     length: 64
+constraints:
+  - type: primary_key
+    columns: [id]
+    # name: users_pkey

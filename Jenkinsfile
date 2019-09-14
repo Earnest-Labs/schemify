@@ -1,17 +1,15 @@
-#!/usr/bin/env groovy
-@Library('jenkins-pipeline-library') _
- 
 pipeline {
   agent {
-    label "generic"
-  }
+    label "system-operations"
+  }    
   options {
     ansiColor colorMapName: 'XTerm'
+    timestamps()
   }
   stages {
-    stage("Display ENV data") {
+    stage("test") {
       steps {
-        printEnvSorted ()
+        sh "echo hello"
       }
     }
   }

@@ -1,4 +1,4 @@
-FROM python:3.7.4-alpine3.10
+FROM python:3.7-alpine3.10
 
 ARG PACKAGES="postgresql-libs"
 ARG BUILD_PACKAGES="gcc musl-dev postgresql-dev"

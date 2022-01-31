@@ -21,7 +21,7 @@ services:
     # entrypoint: ./docker-entrypoint.sh
     
   pgsql-dev:
-    image: postgres:9.4.6
+    image: postgres:12.7
     ports:
       - 5433
       - 5432
